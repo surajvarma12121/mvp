@@ -2,6 +2,9 @@ package com.example.mvpexample;
 
 import android.content.Context;
 
+import retrofit2.Call;
+import retrofit2.http.GET;
+
 public interface Contract {
     public interface Model{
         interface OnFinishedListener{
@@ -23,10 +26,11 @@ public interface Contract {
     public interface Presenter{
         void onButtonClick(Context applicationContext);
 
-       
+
 
 
     }
+
 
 
 }
