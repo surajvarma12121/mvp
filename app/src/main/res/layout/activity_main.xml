@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:layout_width="50dp"
         android:layout_height="50dp"></ProgressBar>
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

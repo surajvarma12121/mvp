@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
 
 public class Model implements Contract.Model {
     String [] name;
-    
+
 
     @Override
     public void getNextCourse(OnFinishedListener onFinishedListener, Context applicationContext) {
@@ -36,29 +36,21 @@ public class Model implements Contract.Model {
                     JSONArray data=  response.getJSONArray("data");
                     name=new String[data.length()];
                     JSONObject detail;
-
                     for(int i=0;i<data.length();i++){
                         detail = data.getJSONObject(i);
-
                         name[i]=detail.getString("email");
-
                     }
                     //getData(name);
                     onFinishedListener.onFinished(name);
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         });
-
         RequestQueue queue = Volley.newRequestQueue(applicationContext);
         queue.add(objectRequest);
 
@@ -70,19 +62,11 @@ public class Model implements Contract.Model {
             public void onResponse(Call<Output> call, Response<Output> response) {
                 list=response.body().getData();
                 onFinishedListener.onFinished();
-
             }
-
             @Override
             public void onFailure(Call<Output> call, Throwable t) {
-
             }
         });
-
-
 */
-
     }
-
-
 }

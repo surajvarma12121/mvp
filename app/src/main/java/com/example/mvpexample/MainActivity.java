@@ -1,30 +1,45 @@
 package com.example.mvpexample;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements Contract.View{
     Contract.Presenter presenter;
     ProgressBar pg;
-    ListView listView;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pg=findViewById(R.id.pg);
-        listView=findViewById(R.id.lv);
+        recyclerView =findViewById(R.id.lv);
         presenter = new Presenter(this, new Model());
 
     }
 
     public void getData(View view) {
-    presenter.onButtonClick(getApplicationContext());
-
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+            presenter.onButtonClick(getApplicationContext());
+        }
+        else {
+            connected = false;
+            Toast.makeText(MainActivity.this,"no internet",Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -41,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements Contract.View{
 
     @Override
     public void setData(String[] data) {
-        ArrayAdapter arrayAdapter=new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,data);
-        listView.setAdapter(arrayAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        MainActivityAdaptor adapter=new MainActivityAdaptor(data);
+        recyclerView.setAdapter(adapter);
     }
 }
